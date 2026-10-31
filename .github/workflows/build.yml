@@ -21,6 +21,10 @@ jobs:
 
     - name: Init Gradle and Build APK
       run: |
+        # البحث عن مكان ملف build.gradle والانتقال إليه تلقائياً
+        PROJECT_DIR=$(find . -name "build.gradle" -not -path "*/.*" -exec dirname {} \;)
+        cd "$PROJECT_DIR"
+        
         gradle wrapper --gradle-version 7.5
         chmod +x gradlew
         ./gradlew assembleDebug --no-daemon
@@ -29,4 +33,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: app-debug
-        path: app/build/outputs/apk/debug/app-debug.apk
+        path: "**/app/build/outputs/apk/debug/app-debug.apk"
